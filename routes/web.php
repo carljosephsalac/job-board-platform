@@ -9,7 +9,8 @@ Route::get('/', function () {
 });
 
 Route::get('/job', function() {
-    $jobs = Job::all();
+    // $jobs = Job::all(); // lazy loading
+    $jobs = Job::with('employer')->get(); // eager loading
     return view('job', compact('jobs'));
 });
 

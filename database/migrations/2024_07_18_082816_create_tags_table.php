@@ -21,8 +21,9 @@ return new class extends Migration
 
         Schema::create('job_listing_tag', function (Blueprint $table) {
             $table->id();
-            // automatic mag-aadd ng foreign key na id sa row ng table na to galing sa Job model
-            // pag na delete na yung foreign key na id sa parent table(Job Model), madedelete na rin yung row sa table na to
+            // automatic mag-aadd ng foreign key na id sa row ng table na to galing sa job_listings at tags table
+            // pag na delete na yung foreign key na id sa parent table(job_listings at tags table),
+            // madedelete na rin yung row sa table na to
             $table->foreignIdFor(Job::class, 'job_listing_id')->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Tag::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
