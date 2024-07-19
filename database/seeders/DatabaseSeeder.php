@@ -16,13 +16,13 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'first_name' => 'Carl',
-            'last_name' => 'Salac',
-            'email' => 'test@example.com',
-        ]);
+        // User::factory()->create([
+        //     'first_name' => 'Carl',
+        //     'last_name' => 'Salac',
+        //     'email' => 'test@example.com',
+        // ]);
 
-        Job::factory(15)->create();
+        Job::factory(6)->create();
 
         // - php artisan db:seed, pwedeng makapag add ng dummy data sa ibat-ibang table sa isang command lang.
         // - php artisan make:seeder SeederName, para makagawa ng specific seeder class.

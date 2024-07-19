@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Job;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
@@ -8,18 +9,31 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/job', function() {
+Route::get('/jobs', function() {
     // $jobs = Job::all(); // lazy loading
     // $jobs = Job::with('employer')->paginate(); // may page number yung pagination
     // $jobs = Job::with('employer')->cursor(); // mahaba yung url, maganda sa maramihang data
-    $jobs = Job::with('employer')->simplePaginate(5); // eager loading
-    return view('job', compact('jobs'));
+    $jobs = Job::with('employer')->latest()->simplePaginate(5); // eager loading
+    return view('jobs.index', compact('jobs'));
 });
 
-Route::get('/job/{id}', function($id) {
-    $chosenJob = Job::find($id);
+Route::get('/jobs/create', function() {
+    return view('jobs.create');
+});
 
-    return view('job', compact('chosenJob'));
+Route::get('/jobs/{id}', function($id) {
+    $chosenJob = Job::find($id);
+    return view('jobs.show', compact('chosenJob'));
+});
+
+Route::post('/jobs', function(Request $request) {
+    Job::create([
+        'employer_id' => 1,
+        'title' => $request->title,
+        'salary' => $request->salary
+    ]);
+
+    return redirect('/jobs');
 });
 
 Route::get('/contact', function() {
