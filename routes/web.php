@@ -12,7 +12,7 @@ Route::get('/job', function() {
     // $jobs = Job::all(); // lazy loading
     // $jobs = Job::with('employer')->paginate(); // may page number yung pagination
     // $jobs = Job::with('employer')->cursor(); // mahaba yung url, maganda sa maramihang data
-    $jobs = Job::with('employer')->simplePaginate(3); // eager loading
+    $jobs = Job::with('employer')->simplePaginate(5); // eager loading
     return view('job', compact('jobs'));
 });
 
