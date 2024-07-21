@@ -3,6 +3,12 @@
     <x-slot:heading>Job Listings</x-slot:heading>
 
     <div class="space-y-5">
+        @session('created')
+            <x-alert color="green">{{ $value }}</x-alert>
+        @endsession
+        @session('deleted')
+            <x-alert color="red">{{ $value }}</x-alert>
+        @endsession
         @foreach ($jobs as $job)
             <a href="/jobs/{{ $job['id'] }}"
                 class="block px-4 py-4 border border-gray-400 rounded-lg hover:border-gray-800">
