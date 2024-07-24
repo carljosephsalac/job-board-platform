@@ -26,11 +26,9 @@
                 </div>
             </div>
         </div>
-
         <div class="flex items-center justify-start mt-6 gap-x-6">
             <x-button color="green" type="submit">Save</x-button>
             <x-button href="/jobs">Cancel</x-button>
         </div>
     </form>
-
 </x-layout>

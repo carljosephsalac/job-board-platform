@@ -47,16 +47,16 @@
                 <x-button type="submit" color="blue">Update</x-button>
                 <x-button href="/jobs/{{ $chosenJob->id }}">Cancel</x-button>
             </div>
-            <x-button data-modal-target="popup-modal" data-modal-toggle="popup-modal" type="button" color="red">
+            <x-button data-modal-target="delete-modal" data-modal-toggle="delete-modal" type="button" color="red">
                 Delete
             </x-button>
-            <x-modal>
+            <x-modal id="delete-modal">
                 Are you sure you want to delete this job?
                 <x-slot:buttons>
-                    <x-button data-modal-hide="popup-modal" type="submit" color="red" form="delete-form">
+                    <x-button data-modal-hide="delete-modal" type="submit" color="red" form="delete-form">
                         Yes, I'm sure
                     </x-button>
-                    <x-button data-modal-hide="popup-modal" type="button">
+                    <x-button data-modal-hide="delete-modal" type="button">
                         No, cancel
                     </x-button>
                 </x-slot:buttons>
