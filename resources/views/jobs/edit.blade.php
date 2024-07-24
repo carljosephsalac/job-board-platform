@@ -2,7 +2,7 @@
     <x-slot:title>Jobs</x-slot:title>
     <x-slot:heading>Edit Job : {{ $chosenJob->title }}</x-slot:heading>
 
-    <form action="/jobs/{{ $chosenJob->id }}" method="POST">
+    <form action="/jobs/{{ $chosenJob->id }}" method="POST" onsubmit="disableSubmitButton(this)">
         @csrf
         @method('patch')
         <div class="space-y-12">
@@ -47,10 +47,24 @@
                 <x-button type="submit" color="blue">Update</x-button>
                 <x-button href="/jobs/{{ $chosenJob->id }}">Cancel</x-button>
             </div>
-            <x-button form="delete-form" type="submit" color="red">Delete</x-button>
+            <x-button data-modal-target="popup-modal" data-modal-toggle="popup-modal" type="button" color="red">
+                Delete
+            </x-button>
+            <x-modal>
+                Are you sure you want to delete this job?
+                <x-slot:buttons>
+                    <x-button data-modal-hide="popup-modal" type="submit" color="red" form="delete-form">
+                        Yes, I'm sure
+                    </x-button>
+                    <x-button data-modal-hide="popup-modal" type="button">
+                        No, cancel
+                    </x-button>
+                </x-slot:buttons>
+            </x-modal>
         </div>
     </form>
-    <form action="/jobs/{{ $chosenJob->id }}" method="POST" class="hidden" id="delete-form">
+    <form action="/jobs/{{ $chosenJob->id }}" method="POST" class="hidden" id="delete-form"
+        onsubmit="disableSubmitButton(this)">
         @csrf
         @method('delete')
     </form>

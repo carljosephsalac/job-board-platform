@@ -3,7 +3,9 @@
     <x-slot:heading>Job Description</x-slot:heading>
 
     @session('updated')
-        <x-alert color="blue">{{ $value }}</x-alert>
+        @unless (session('old_updated_at')->eq($chosenJob->updated_at))
+            <x-alert color="blue">{{ $value }}</x-alert>
+        @endunless
     @endsession
 
     <h2 class="text-lg font-bold ">{{ $chosenJob->title }}</h2>

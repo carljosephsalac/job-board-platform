@@ -53,11 +53,16 @@ class JobController extends Controller
             'title' => 'required|min:3',
             'salary' => 'required|numeric'
         ]);
+
         $chosenJob = Job::findOrFail($id);
+
+        session(['old_updated_at' => $chosenJob->updated_at]); // store old updated_at in session
+
         $chosenJob->update([
             'title' => $request->title,
             'salary' => $request->salary
         ]);
+
         return redirect('/jobs/' . $chosenJob->id)->with('updated', 'Updated Successfully');
     }
     # UPDATE Route Model Binding
