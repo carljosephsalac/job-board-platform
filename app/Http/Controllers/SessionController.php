@@ -35,6 +35,6 @@ class SessionController extends Controller
     {
         Auth::logout();
 
-        return redirect()->route('login.create');
+        return redirect()->route('login');
     }
 }

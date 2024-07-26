@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Job;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class JobController extends Controller
 {
@@ -22,6 +25,7 @@ class JobController extends Controller
             'title' => 'required|min:3',
             'salary' => 'required|numeric'
         ]);
+
         Job::create([
             'employer_id' => 1,
             'title' => $request->title,
@@ -35,53 +39,68 @@ class JobController extends Controller
         return view('jobs.create');
     }
 
-    public function show($id)
+    public function show(Job $job)
     {
-        $chosenJob = Job::find($id);
-        return view('jobs.show', compact('chosenJob'));
+        return view('jobs.show', compact('job'));
     }
 
-    public function edit($id)
+    public function edit(Job $job)
     {
-        $chosenJob = Job::find($id);
-        return view('jobs.edit', compact('chosenJob'));
+        # Step 1. inline authorization
+        // if (Auth::guest())
+        // {
+        //     return redirect('/');
+        // }
+
+        // if ($job->employer->user->isNot(Auth::user())) { // inline authorization
+        //     abort(403);
+        // }
+
+        # Step 2. GATES
+        // Gate::define('edit-job', function(User $user, Job $job) {
+        //     // if the user who created the job is the currently signed in user.
+        //     return $job->employer->user->is($user);
+        // });
+
+        // Gate::authorize('edit-job', $job); // if false it will abort an error message
+
+        # Step 4. can, can, can (Model)
+        // if (Auth::user()->cannot('edit-job', $job)) {
+        //     abort(401);
+        // }
+
+        return view('jobs.edit', compact('job'));
     }
 
-    public function update($id, Request $request)
+    public function update(Request $request, Job $job)
     {
         $request->validate([
             'title' => 'required|min:3',
             'salary' => 'required|numeric'
         ]);
 
-        $chosenJob = Job::findOrFail($id);
+        session(['old_updated_at' => $job->updated_at]); // store old updated_at in session
 
-        session(['old_updated_at' => $chosenJob->updated_at]); // store old updated_at in session
-
-        $chosenJob->update([
+        $job->update([
             'title' => $request->title,
             'salary' => $request->salary
         ]);
 
-        return redirect('/jobs/' . $chosenJob->id)->with('updated', 'Updated Successfully');
+        return redirect('/jobs/' . $job->id)->with('updated', 'Updated Successfully');
     }
-    # UPDATE Route Model Binding
-    // public function update(Job $chosenJob, Request $request)
-    // {
-    //     $request->validate([
-    //         'title' => 'required|min:3',
-    //         'salary' => 'required|numeric'
-    //     ]);
-    //     $chosenJob->update([
-    //         'title' => $request->title,
-    //         'salary' => $request->salary
-    //     ]);
-    //     return redirect('/jobs/' . $chosenJob->id)->with('updated', 'Updated Successfully');
-    // }
 
-    public function destroy($id)
+    public function destroy(Job $job)
     {
-        Job::findOrFail($id)->delete();
+        $job->delete();
         return redirect('/jobs')->with('deleted', 'Deleted Successfully');
     }
 }
+
+# NO ROUTE MODEL BINDING
+/*
+    public function show($id)
+    {
+        $job = Job::find($id); // or findOrFail()
+        return view('jobs.show', compact('job'));
+    }
+*/

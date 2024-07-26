@@ -1,8 +1,8 @@
 <x-layout>
     <x-slot:title>Jobs</x-slot:title>
-    <x-slot:heading>Edit Job : {{ $chosenJob->title }}</x-slot:heading>
+    <x-slot:heading>Edit Job : {{ $job->title }}</x-slot:heading>
 
-    <form action="/jobs/{{ $chosenJob->id }}" method="POST" onsubmit="disableSubmitButton(this)">
+    <form action="/jobs/{{ $job->id }}" method="POST" onsubmit="disableSubmitButton(this)">
         @csrf
         @method('patch')
         <div class="space-y-12">
@@ -15,7 +15,7 @@
                                 class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input type="text" name="title" id="title"
                                     class="block flex-1 border-0 bg-transparent py-1.5 px-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus:outline-none"
-                                    placeholder="Senior Laravel Developer" value="{{ old('title', $chosenJob->title) }}"
+                                    placeholder="Senior Laravel Developer" value="{{ old('title', $job->title) }}"
                                     required>
                             </div>
                         </div>
@@ -31,8 +31,7 @@
                                 class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input type="text" name="salary" id="salary"
                                     class="block flex-1 border-0 bg-transparent py-1.5 px-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus:outline-none"
-                                    placeholder="₱100,000 Per Month" value="{{ old('salary', $chosenJob->salary) }}"
-                                    required>
+                                    placeholder="₱100,000 Per Month" value="{{ old('salary', $job->salary) }}" required>
                             </div>
                         </div>
                         @error('salary')
@@ -45,7 +44,7 @@
         <div class="flex items-center justify-between mt-6 gap-x-6">
             <div class="flex gap-3">
                 <x-button type="submit" color="blue">Update</x-button>
-                <x-button href="/jobs/{{ $chosenJob->id }}">Cancel</x-button>
+                <x-button href="/jobs/{{ $job->id }}">Cancel</x-button>
             </div>
             <x-button data-modal-target="delete-modal" data-modal-toggle="delete-modal" type="button" color="red">
                 Delete
@@ -63,7 +62,7 @@
             </x-modal>
         </div>
     </form>
-    <form action="/jobs/{{ $chosenJob->id }}" method="POST" class="hidden" id="delete-form"
+    <form action="/jobs/{{ $job->id }}" method="POST" class="hidden" id="delete-form"
         onsubmit="disableSubmitButton(this)">
         @csrf
         @method('delete')
