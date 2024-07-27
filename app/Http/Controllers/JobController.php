@@ -33,7 +33,7 @@ class JobController extends Controller
 
         $job = Job::create($validated);
 
-        Mail::to('salaccarljoseph@gmail.com')->send(new JobPosted($job));
+        Mail::to('salaccarljoseph@gmail.com')->queue(new JobPosted($job));
 
         return redirect('/jobs')->with('created', 'Created Successfully');
     }
