@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employer;
 use App\Models\Job;
 use App\Models\User;
+use App\Mail\JobPosted;
+use App\Models\Employer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 
 class JobController extends Controller
 {
@@ -29,7 +31,9 @@ class JobController extends Controller
 
         $validated['employer_id'] = auth()->user()->employer->id;
 
-        Job::create($validated);
+        $job = Job::create($validated);
+
+        Mail::to('salaccarljoseph@gmail.com')->send(new JobPosted($job));
 
         return redirect('/jobs')->with('created', 'Created Successfully');
     }

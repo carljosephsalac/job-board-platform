@@ -5,6 +5,7 @@ use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
 
+
 Route::get('/', fn() => redirect()->route('login'));
 
 Route::get('/register', [RegisterUserController::class, 'create'])->name('register.create');
