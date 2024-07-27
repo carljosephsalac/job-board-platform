@@ -18,18 +18,16 @@ Route::view('/home', 'home');
 Route::view('/contact', 'contact');
 
 Route::controller(JobController::class)->group(function() {
-    Route::get('/jobs', 'index')->name('jobs.index');
-    Route::get('/jobs/create', 'create')->name('jobs.create');
-    Route::post('/jobs', 'store')->name('jobs.store')->middleware('auth'); #Step 5. Middleware Authorization
-    Route::get('/jobs/{job}', 'show')->name('jobs.show');
-
-    Route::get('/jobs/{job}/edit', 'edit')->name('jobs.edit')
-        ->middleware('auth')
+    Route::middleware('auth')->group(function() { #Step 5. Middleware Authorization
+        Route::get('/jobs/create', 'create')->name('jobs.create');
+        Route::post('/jobs', 'store')->name('jobs.store');
+        Route::get('/jobs/{job}/edit', 'edit')->name('jobs.edit')->can('edit', 'job'); #Step 6. Policies
         // ->can('edit-job', 'job'); #Step 5. Middleware Authorization, can() method in routes
-        ->can('edit', 'job'); #Step 6. Policies
-
-    Route::patch('/jobs/{job}', 'update')->name('jobs.update');
-    Route::delete('/jobs/{job}', 'destroy')->name('jobs.destroy');
+        Route::patch('/jobs/{job}', 'update')->name('jobs.update');
+        Route::delete('/jobs/{job}', 'destroy')->name('jobs.destroy');
+    });
+    Route::get('/jobs', 'index')->name('jobs.index');
+    Route::get('/jobs/{job}', 'show')->name('jobs.show');
 });
 
 

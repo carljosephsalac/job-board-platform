@@ -20,4 +20,5 @@
     @can('edit', $job)
         <x-button class="mt-5" href="/jobs/{{ $job->id }}/edit" color="blue">Edit Job</x-button>
     @endcan
+    <x-button class="mt-5" href="{{ route('jobs.index') }}">Back</x-button>
 </x-layout>

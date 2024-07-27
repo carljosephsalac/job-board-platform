@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employer;
 use App\Models\Job;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -21,16 +22,15 @@ class JobController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated= $request->validate([
             'title' => 'required|min:3',
             'salary' => 'required|numeric'
         ]);
 
-        Job::create([
-            'employer_id' => 1,
-            'title' => $request->title,
-            'salary' => $request->salary
-        ]);
+        $validated['employer_id'] = auth()->user()->employer->id;
+
+        Job::create($validated);
+
         return redirect('/jobs')->with('created', 'Created Successfully');
     }
 
