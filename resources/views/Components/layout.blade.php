@@ -16,7 +16,9 @@
                 <div class="flex items-center justify-between h-16">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <img class="w-8 h-8" src="{{ asset('img/cjstechlogo.png') }}" alt="Your Company">
+                            {{-- <img class="w-8 h-8" src="{{ asset('img/cjstechlogo.png') }}" alt="Your Company"> --}}
+                            <img class="w-8 h-8" src="{{ Vite::asset('resources/images/cjstechlogo.png') }}"
+                                alt="Your Company">
                         </div>
                         <div class="hidden md:block">
                             <div class="flex items-baseline ml-10 space-x-4">
@@ -103,7 +105,10 @@
                 <div class="pt-4 pb-3 border-t border-gray-700">
                     <div class="flex items-center px-5">
                         <div class="flex-shrink-0">
-                            <img class="w-10 h-10 rounded-full" src="{{ asset('img/graduation-pic-reduce-crop.jpg') }}"
+                            {{-- <img class="w-10 h-10 rounded-full" src="{{ asset('img/graduation-pic-reduce-crop.jpg') }}"
+                                alt=""> --}}
+                            <img class="w-10 h-10 rounded-full"
+                                src="{{ Vite::asset('resources/images/graduation-pic-reduce-crop.jpg') }}"
                                 alt="">
                         </div>
                         <div class="ml-3">
@@ -155,7 +160,7 @@
             form.querySelector('[type="submit"]').disabled = true;
         }
     </script>
-    <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+    {{-- <script src="../path/to/flowbite/dist/flowbite.min.js"></script> --}}
 </body>
 
 </html>
