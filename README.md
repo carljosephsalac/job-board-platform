@@ -1,66 +1,139 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 30 Days to Learn Laravel - Laracast
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## DAY 1
 
-## About Laravel
+### Laravel Blade Components
+- Laging may "x" pag tatawagin yung component, example `<x-layout>`.
+- `<x-layout>` kadalasang ginagamit na component name ng main layout, may pagkakatulad sya sa `@extends('layout')`.
+- `{{$slot}}`, ito yung default slot ng layout. Dito napupunta yung dynamic content ng isang layout, may pagkakatulad sya sa `@yield('slot')`.
+- Pwede ring mag add ng named slot sa isang layout, example kung gustong gawing dynamic yung header: `<header>{{$header}}</header>`.
+- Pag gagamitin na sya: `<x-slot:<header>Home</x-slot:<header>`.
+- `{{$attributes}}` dito napupunta yung mga HTML element attributes.
+- `@props`, parang additional attribute ng component.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### View Data and Route Wildcards
+```php
+Route::get('/job/{id}', function($id) {
+  // some code
+});
+```
+- wildcard ang tawag sa `{id}`, pwedeng maaccess ang value ng wildcard sa loob ng callback function/closure.
+- pwedeng magpasa ng data dito galing sa view example, `<a href="/job/{{ $job['id'] }}">`.
+- `Arr::first()` built in method sa Laravel para mabilis mahanap yung element sa isang array.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Autoloading, Namespaces and Models:
+- natutunan ko kung paano gumawa ng hardcoded na Model na may dummy data.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## DAY 2
 
-## Learning Laravel
+### Introduction to Migrations:
+- natutunan ko kung paano gumamit ng sqlite and tableplus.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Meet Eloquent:
+- `protected $table = 'table_names';` pag magkaiba yung word na ginamit sa table name at model class name.
+- `php artisan tinker`, para makapag run ng php code at makapagmanipulate ng database gamit and cli.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Model Factories:
+- trait, para magamit ng isang class yung mga method sa ibang class kahit hindi gumagamit ng inheritance.
+- `HasFactory` trait, para magamit ng Model yung mga factory method para makagawa ng dummy data sa model na yon, ex. `Job::factory()->create();`
+- $table->foreignIdFor(ModelName::class); para makapag add ng foreign key na id sa table.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Two key Eloquent relationship types:
+- `belongsTo(ModelName::class);` child in one-to-one or one-to-many relationship.
+- `hasMany(ModelName::class);` parent in one-to-many relationship.
 
-## Laravel Sponsors
+## DAY 3
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Pivot tables and BelongsToMany Relationships:
+- `$table->foreignIdFor(ModelName::class)->constrained()->cascadeOnDelete();`
+  Automatic mag-aadd ng foreign key na id sa row ng table na to.
+  Pag na delete na yung foreign key na id sa parent table, madedelete na rin yung row sa table na to.
+- `php artisan migrate:rollback`, para ma undo yung huling migration.
+- `belongsToMany();` many to many relationship.
+- natutunan ko kung paano ioverride yung naming convention ng laravel sa table name at column name.
+- natutunan ko kung paano maglagay ng data sa pivot table na ang laman ay yung mga foreign id sa ibang table.
 
-### Premium Partners
+### Eager Loading and the N+1 Problem:
+- N+1 problem/lazy loading, nagkakaroon ng isang query kada loop sa collection na may foreign key, kaya pag maraming data yung table ng foreign key ng collection marami din yung query, ex. `$jobs = Job::all();`
+- eager loading, sa isang query mareretrieve na lahat ng data kasama yung data ng foreign key, ex. `$jobs = Job::with('employer')->get();`
+- natutunan ko kung paano gumamit ng laravel debugbar.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## DAY 4
 
-## Contributing
+### All You Need To Know About Pagination:
+- pagination, mas napapabilis pa yung query dahil may limit yung item na irerender, ex. `paginate(5)`.
+- natutunan ko yung ibat-ibang type ng pagination at kung kailan sila magandang gamitin, `paginate()`, `simplePaginate()`, `cursor()`.
+- `php artisan vendor:publish`, para lumabas yung mga views ng pagination link, pwede ring imodify.
+- pwedeng ilagay yung default pagination link sa AppServiceProvider, ex. kung bootstrap 5 yung gamit `Paginator::useBootstrapFive();`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Understanding Database Seeders:
+- `php artisan db:seed`, pwedeng makapag add ng dummy data sa ibat-ibang table sa isang command lang.
+- `php artisan make:seeder SeederName`, para makagawa ng specific seeder class.
+- `php artisan db:seed --class=SeederName`, pag specific na table lang ang gustong lagyan ng dummy data.
 
-## Code of Conduct
+### Forms and CSRF
+- laravel convention, para mabilis maintindihan ng mga laravel developer yung code/project ng isat-isa.
+- csrf, pagsubmit ng form data or post request sa isang website gamit ang ibang webiste ex. phising site.
+- `@csrf` token, para malaman ng server kung legit na user yung gumagawa ng form request, chinecheck ng laravel kung magkapareho yung csrf token at session token ng user, pag hindi magkapareho lalabas yung 419 page expired error.
+- `protected $fillable`, dito nilalagay yung mga column name ng table na mass assignable.
+- `protected $guarded`, dito nilalagay yung mga column name ng table na hindi mass assignable.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## DAY 5
 
-## Security Vulnerabilities
+### Editing, Updating and Deleting a Resource:
+- resource, ito yung instance ng model, ex. `$user = User::find($id);` yung $user ang resource.
+- put, pag yung buong resource ang gustong iupdate, ex. pag gusto kong iupdate yung name, email at password fields ng $user.
+- patch, pag yung specific field lang yung gusto kong iupdate, ex. yung name field lang.
+- `findOrFail($id)`, pag hindi mahanap or wala yung $id sa table, magtothrow ng error.
+- route model binding, kailangan magkapareho yung name ng route parameter/wildcard ex. `'/jobs/{chosenJob}'` at name ng instance ng model ex. `function(Job $chosenJob)` para gumana.
+- kahit pare-pareho ng route url basta iba-iba yung http method gagana pa rin.
+- pag may dalawang submit button sa isang form tapos yung isang button sa ibang route ko isasubmit, gagawa lang ng isang form na hidden tapos lalagyan ng id, tapos yung isang submit button na gusto kong papuntahin sa ibang route ay lalagyan ng form attribute na ang value ay yung id ng hidden form, ex.` form="hidden-form-id"`.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Routes Reloaded:
+- `Route::view('/', 'home');` shorthand pag view lang ang irereturn.
+- `php artisan route:list --except-vendor`, para makita lahat ng routes at yung corresponding controller.
+- `Route::resource()`, automatic gagawa ng mga routes.
+- `only` at `except`, pag gustong tanggalin yung ibang routes.
 
-## License
+## DAY 6
+- laravel breeze
+- laravel bootcamp
+- cms-laravel-breeze
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## DAY 7
+
+### Make a Login and Registration System From Scratch:
+- `@guest`, kung di pa naka login yung user.
+- `@auth`, kung naka login na yung user.
+- `Illuminate\Validation\Rules\Password;` nagpoprovide ng validation para sa password.
+- `'password' => 'confirmed'`, validation para sa password confirmation, dapat yung name attribute ng confirm password field ay `password_confirmation`.
+- `throw ValidationException::withMessages(['email' => 'Wrong Credentials']);` custom validation
+
+## DAY 8
+
+### Steps to Authorization Mastery:
+- `Auth::guest()`, pag di pa naka login.
+- `$user->is`, `$user->isNot`, para macompare yung mga id ng mga Model, ex. User Model or $user instance.
+- Step 1. inline authorization
+- Step 2. GATES
+- Step 3. Define Gates inside AppServiceProvider
+- Step 4. `$model->can()`, `@can`, `Route::post()->can`
+- Step 5. Middleware Authorization
+- Step 6. Policies
+
+## DAY 9
+
+### How to preview and send email using mailable class:
+- `php artisan make:mail`.
+- make view for email.
+- configure .env using mailtrap.
+
+### Queues are easier than you think:
+- terms (`queue`, `job`, `worker`)
+- `queue`, ginagawa nya yung job behind the scene(asynchronously) para bumilis yung loading ng request.
+- `queue()` instead of `send()`.
+- `php artisan queue:work`, para may mag manage ng job or para gumana yung queue.
+- `dispatch()->delay(3);`
+- dedicated job classes `php artisan make:job`.
+- always restart the worker(`php artisan queue:work`) after making a code change.
+
